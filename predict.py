@@ -1,6 +1,6 @@
 def load_theta():
     try:
-        with open("theta.csv", 'r') as file:
+        with open("data/theta.csv", 'r') as file:
             line = file.readline().strip()
             theta0, theta1 = map(float, line.split(','))
             return theta0, theta1
@@ -18,19 +18,22 @@ def main ():
 
     if theta0 == 0 and theta1 == 0:
         print("Le modèle n'est pas encore entraîné.")
+        print("Lancez d'abord train.py pour entraîner le modèle.")
         return
 
     try:
-        km = float(input("Entrez le kilométrage de la voiture : "))
-        if km < 0:
+        mileage = float(input("Entrez le kilométrage de la voiture : "))
+        if mileage < 0:
             print("Le kilométrage ne peut pas être négatif.")
             return
+        
+        km = mileage / 1000
+        prix = estimate_price(km, theta0, theta1)
+        print(f"Prix estimé : {prix:.2f}€")
+        
     except ValueError:
-        print("Veuillez entrer un nombre valide.")
-        return
+        print("Erreur : Veuillez entrer un nombre valide.")
     
-    prix = estimate_price(km, theta0, theta1)
-    print(f"Prix estimé : {prix}")
     return
 
 if __name__ == "__main__":
